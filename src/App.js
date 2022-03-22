@@ -5,26 +5,28 @@ import "bootstrap/dist/css/bootstrap.css";
 function App() {
   const [book, setBook] = useState([]);
   const [researched, setResearched] = useState(false);
+  const [event, setEvent] = useState();
 
-  async function getter(e) {
-    if (!book)
-      return;
-    if (e.target.value !== "") {
-      await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${e.target.value}`
-      )
-        .then((res) => res.json())
-        .then((end) => setBook(end))
-      setResearched(true);
-    } else {
-      setResearched(false);
-      setBook([]);
-    }
-  }
-
+  
   useEffect(() => {
-    console.log(book);
-  }, [book]);
+    async function getter() {
+      setBook([])
+      if (book === undefined)
+        return;
+      if (event?.target?.value !== "" && event?.target?.value !== undefined) {
+        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${event?.target?.value}`)
+          .then((res) => res.json())
+          .then((end) => setBook(end))
+        setResearched(true);
+      } else {
+        setResearched(false);
+        setBook([]);
+      }
+    }
+    getter();
+  }, [event]);
+  
+  console.log(book, event?.target?.value);
 
   return (
     <div className="App">
@@ -32,13 +34,13 @@ function App() {
         <p>Book Finder</p>
         <input
           type="input"
-          onChange={(e) => getter(e)}
+          onChange={(e) => setEvent(e)}
           className="form-control form-style"
         />
-        {researched === true && book !== undefined
-          ? book.items.map((item) => {
+        {researched === true && event?.target?.value !== '' 
+          ? book?.items?.map((item, i) => {
               return(
-                <div className="list-group">
+                <div key={item.id} className="list-group">
                   <a
                     href="#1"
                     className="list-group-item list-group-item-action flex-column align-items-start">
