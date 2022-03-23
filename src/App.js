@@ -33,7 +33,7 @@ function App() {
     getter();
   }, [event, elems, page]);
 
-  useEffect (() => {}, [close]);
+  useEffect(() => {}, [close]);
 
   return (
     <div className="App">
@@ -41,69 +41,90 @@ function App() {
         <p>Book Finder</p>
         <input
           type="input"
-          onChange={(e) => {setEvent(e); setPage(1)}}
+          onChange={(e) => {
+            setEvent(e);
+            setPage(1);
+          }}
           className="form-control form-style"
         />
         {researched && event?.target?.value !== "" ? (
           <div>
-            {book?.totalItems ? 
-            <small>Page {page} of {book?.totalItems % elems === 0  ? ~~(book?.totalItems / elems) : ~~(book?.totalItems / elems + 1) },  </small> 
-            : null}
+            {book?.totalItems ? (
+              <small>
+                Page {page} of{" "}
+                {book?.totalItems % elems === 0
+                  ? ~~(book?.totalItems / elems)
+                  : ~~(book?.totalItems / elems + 1)}
+                ,{" "}
+              </small>
+            ) : null}
             <small>items per page: </small>
             <button
               type="button"
-              onClick={() => {setElems(5); setPage(1)}}
+              onClick={() => {
+                setElems(5);
+                setPage(1);
+              }}
               className="btn btn-success"
-              >
+            >
               5
             </button>
             <button
               type="button"
-              onClick={() => {setElems(10); setPage(1)}}
+              onClick={() => {
+                setElems(10);
+                setPage(1);
+              }}
               className="btn btn-success"
-              >
+            >
               10
             </button>
             <button
               type="button"
-              onClick={() => {setElems(15); setPage(1)}}
+              onClick={() => {
+                setElems(15);
+                setPage(1);
+              }}
               className="btn btn-success"
-              >
+            >
               15
             </button>
             <button
               type="button"
-              onClick={() => {setElems(20); setPage(1)}}
+              onClick={() => {
+                setElems(20);
+                setPage(1);
+              }}
               className="btn btn-success"
-              >
+            >
               20
             </button>
-            {page === 1 ? <button
-              type="button"
-              disabled
-              className="btn btn-secondary"
+            {page === 1 ? (
+              <button type="button" disabled className="btn btn-secondary">
+                {"<<"}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setPage(page - 1)}
+                className="btn btn-secondary"
               >
-              {'<<'}
-            </button> : <button
-              type="button"
-              onClick={() => setPage(page - 1)}
-              className="btn btn-secondary"
+                {"<<"}
+              </button>
+            )}
+            {(elems * page >= book?.totalItems || !book?.totalItems)? (
+              <button type="button" disabled className="btn btn-secondary">
+                &gt;&gt;
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setPage(page + 1)}
+                className="btn btn-secondary"
               >
-              {'<<'}
-            </button>}
-            {elems * page >= book?.totalItems ? <button
-              type="button"
-              disabled
-              className="btn btn-secondary"
-              >
-              &gt;&gt;
-            </button>: <button
-              type="button"
-              onClick={() => setPage(page + 1)}
-              className="btn btn-secondary"
-              >
-              &gt;&gt;
-            </button>}
+                &gt;&gt;
+              </button>
+            )}
           </div>
         ) : null}
         {researched === true && event?.target?.value !== ""
@@ -112,28 +133,43 @@ function App() {
                 <div key={item.id} className="list-group">
                   <a
                     className="list-group-item list-style list-group-item-action"
-                    onClick={() => {setClose(false); setSelect(item)}}
+                    onClick={() => {
+                      setClose(false);
+                      setSelect(item);
+                    }}
                   >
                     <div className="w-100 justify-content-between">
                       <h5 className="mb-1">{item?.volumeInfo?.title}</h5>
-                      <small className="text-muted">{item?.volumeInfo?.authors}</small>
+                      <small className="text-muted">
+                        {item?.volumeInfo?.authors?.map((author) => {
+                          return (author + ' ')})
+                        }
+                      </small>
                     </div>
                     <p className="mb-1">
                       <img
                         alt=""
                         className="image-style"
-                        src={item?.volumeInfo?.imageLinks?.smallThumbnail}
-                        /* src="https://adriaticaindustriale.it/wp-content/uploads/2020/02/not-found.png" */
+                        src={
+                          item?.volumeInfo?.imageLinks?.smallThumbnail
+                            ? item?.volumeInfo?.imageLinks?.smallThumbnail
+                            : "https://adriaticaindustriale.it/wp-content/uploads/2020/02/not-found.png"
+                        }
                       />
                     </p>
-                    <p className="text-style" dangerouslySetInnerHTML={{__html: item?.searchInfo?.textSnippet}}/>
+                    <p
+                      className="text-style"
+                      dangerouslySetInnerHTML={{
+                        __html: item?.searchInfo?.textSnippet,
+                      }}
+                    />
                   </a>
                 </div>
               );
             })
           : null}
       </header>
-          {close ? null : infoPopup(setClose, select)}
+      {close ? null : infoPopup(setClose, select)}
     </div>
   );
 }

@@ -15,13 +15,23 @@ export function infoPopup(setClose, select) {
             <b>Title: </b>
             {select.volumeInfo?.title}
           </p>
-          <p><b>Authors: </b>{select.volumeInfo?.authors}</p>
+          <p>
+            <b>{select.volumeInfo?.authors ? "Authors: " : null}</b>
+            {select.volumeInfo?.authors?.map((author) => {
+              return author + " ";
+            })}
+          </p>
           <img
             alt=""
             className="card-img-left popup-image-style"
-            src={select?.volumeInfo?.imageLinks?.smallThumbnail}
+            src={
+              select?.volumeInfo?.imageLinks?.smallThumbnail
+                ? select?.volumeInfo?.imageLinks?.smallThumbnail
+                : "https://adriaticaindustriale.it/wp-content/uploads/2020/02/not-found.png"
+            }
           />
-          <p className="popup-text-style"
+          <p
+            className="popup-text-style"
             dangerouslySetInnerHTML={{
               __html: select?.searchInfo?.textSnippet,
             }}
