@@ -35,8 +35,6 @@ function App() {
 
   useEffect (() => {}, [close]);
 
-  console.log(book, event?.target?.value, book.totalItems);
-
   return (
     <div className="App">
       <header className="App-header">
@@ -85,26 +83,26 @@ function App() {
               disabled
               className="btn btn-secondary"
               >
-              prev
+              {'<<'}
             </button> : <button
               type="button"
               onClick={() => setPage(page - 1)}
               className="btn btn-secondary"
               >
-              prev
+              {'<<'}
             </button>}
             {elems * page >= book?.totalItems ? <button
               type="button"
               disabled
               className="btn btn-secondary"
               >
-              next
+              &gt;&gt;
             </button>: <button
               type="button"
               onClick={() => setPage(page + 1)}
               className="btn btn-secondary"
               >
-              next
+              &gt;&gt;
             </button>}
           </div>
         ) : null}
@@ -113,8 +111,7 @@ function App() {
               return (
                 <div key={item.id} className="list-group">
                   <a
-                    href="#1"
-                    className="list-group-item list-group-item-action"
+                    className="list-group-item list-style list-group-item-action"
                     onClick={() => {setClose(false); setSelect(item)}}
                   >
                     <div className="w-100 justify-content-between">
@@ -126,6 +123,7 @@ function App() {
                         alt=""
                         className="image-style"
                         src={item?.volumeInfo?.imageLinks?.smallThumbnail}
+                        /* src="https://adriaticaindustriale.it/wp-content/uploads/2020/02/not-found.png" */
                       />
                     </p>
                     <p className="text-style" dangerouslySetInnerHTML={{__html: item?.searchInfo?.textSnippet}}/>
