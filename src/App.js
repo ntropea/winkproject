@@ -132,6 +132,7 @@ function App() {
               return (
                 <div key={item.id} className="list-group">
                   <a
+                    href={"#" + i}
                     className="list-group-item list-style list-group-item-action"
                     onClick={() => {
                       setClose(false);
