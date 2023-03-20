@@ -35,6 +35,44 @@ function App() {
 
   useEffect(() => {}, [close]);
 
+  function Button({i}) {
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          setElems(i);
+          setPage(1);
+        }}
+        className="btn btn-success"
+      >
+        {i}
+      </button>
+    )
+  }
+
+  function PageSwitch() {
+    return (
+      <div>
+        <button
+        type="button"
+        disabled={page === 1}
+        onClick={() => setPage(page - 1)}
+        className="btn btn-secondary"
+        >
+          {"<<"}
+        </button>
+        <button
+        type="button"
+        disabled={elems * page >= book?.totalItems || !book?.totalItems}
+        onClick={() => setPage(page + 1)}
+        className="btn btn-secondary"
+        >
+          &gt;&gt;
+        </button>
+      </div>
+    )
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -59,75 +97,14 @@ function App() {
               </small>
             ) : null}
             <small>items per page: </small>
-            <button
-              type="button"
-              onClick={() => {
-                setElems(5);
-                setPage(1);
-              }}
-              className="btn btn-success"
-            >
-              5
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setElems(10);
-                setPage(1);
-              }}
-              className="btn btn-success"
-            >
-              10
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setElems(15);
-                setPage(1);
-              }}
-              className="btn btn-success"
-            >
-              15
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setElems(20);
-                setPage(1);
-              }}
-              className="btn btn-success"
-            >
-              20
-            </button>
-            {page === 1 ? (
-              <button type="button" disabled className="btn btn-secondary">
-                {"<<"}
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setPage(page - 1)}
-                className="btn btn-secondary"
-              >
-                {"<<"}
-              </button>
-            )}
-            {(elems * page >= book?.totalItems || !book?.totalItems)? (
-              <button type="button" disabled className="btn btn-secondary">
-                &gt;&gt;
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setPage(page + 1)}
-                className="btn btn-secondary"
-              >
-                &gt;&gt;
-              </button>
-            )}
+            <Button i={5}/>
+            <Button i={10}/>
+            <Button i={15}/>
+            <Button i={20}/>
+            <PageSwitch/>
           </div>
         ) : null}
-        {researched === true && event?.target?.value !== ""
+        {researched && event?.target?.value !== ""
           ? book?.items?.map((item, i) => {
               return (
                 <div key={item.id} className="list-group">
@@ -142,9 +119,13 @@ function App() {
                     <div className="w-100 justify-content-between">
                       <h5 className="mb-1">{item?.volumeInfo?.title}</h5>
                       <small className="text-muted">
-                        {item?.volumeInfo?.authors?.map((author) => {
-                          return (author + ' ')})
-                        }
+                        {item?.volumeInfo?.authors?.map((author, index) => {
+                          if (index === item?.volumeInfo?.authors?.length - 1) {
+                            return author;
+                          } else {
+                            return (author + ', ');
+                          }
+                        })}
                       </small>
                     </div>
                     <p className="mb-1">
@@ -169,6 +150,7 @@ function App() {
               );
             })
           : null}
+          {researched && event?.target?.value !== "" ? <PageSwitch/> : null}
       </header>
       {close ? null : infoPopup(setClose, select)}
     </div>

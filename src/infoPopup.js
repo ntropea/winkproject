@@ -17,8 +17,12 @@ export function infoPopup(setClose, select) {
           </p>
           <p>
             <b>{select.volumeInfo?.authors ? "Authors: " : null}</b>
-            {select.volumeInfo?.authors?.map((author) => {
-              return author + " ";
+            {select.volumeInfo?.authors?.map((author, index) => {
+              if (index === select.volumeInfo?.authors?.length - 1) {
+                return author;
+              } else {
+                return author + ", ";
+              }
             })}
           </p>
           <img
